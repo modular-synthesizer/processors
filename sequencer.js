@@ -2,36 +2,57 @@
  * The inputs of the processor are :
  * - [0] the clock port, each pulse sent here triggers the next step.
  * - [1] the reset port, send a pulse here to reset the internal clock.
+ * - [2] the run port. When nothing is connected, the sequencer runs, if something is connected, the sequencer runs
+ *       only if the connected noe emits a signal of 1, stops running if it doesn't.
  * The outputs of the processor are :
  * - [0-7] the outputs of the different steps of the sequencer
+ * The parameters of the processor are :
+ * - [steps] the number of steps before resetting the count.
  */
 class SequencerProcessor extends AudioWorkletProcessor {
 
   step = 0;
 
-  triggering = false;
+  process(inputs, outputs, parameters) {
+    const steps = parameters["steps"][0] - 1;
 
-  process(inputs, outputs, _parameters) {
     for (let i = 0; i < 128; ++i) {
-      if (this.triggered(inputs, 1, 0, i)) {
-        this.triggering = true;
-        this.step = 0;
+      const clockSignal = this.triggered(inputs, 0, 0, i);
+      const resetSignal = this.triggered(inputs, 1, 0, i);
+      // When nothing is connected to the third input, the run signal is considered ON.
+      const runSignal = this.parse(inputs, 2, 0, i, 1);
+
+      if (resetSignal) this.step = 0;
+
+      if (clockSignal && runSignal === 1) {
+        this.step = (this.step >= steps) ? 0 : (this.step + 1);
       }
-      else {
-        this.triggering = false;
-      }
-      outputs[this.step][0][i] = 1;
-      if (this.triggered(inputs, 0, 0, i)) {
-        this.step = (this.step === 7) ? 0 : (this.step + 1);
-      }
+
+      outputs[this.step][0][i] = runSignal;
     }
     return true;
   }
 
-  triggered(inputs, position, channel, index) {
-    if (inputs.length <= position) return false;
-    if (inputs[position].length <= channel) return false;
-    return inputs[position][channel][index] === 1;
+  parse(inputs, position, channel, index, defaultValue = 0) {
+    if (inputs.length <= position) return defaultValue;
+    if (inputs[position].length <= channel) return defaultValue;
+    return inputs[position][channel][index];
+  }
+
+  triggered(inputs, position, channel, index, defaultValue = false) {
+    return this.parse(inputs, position, channel, index, defaultValue) === 1
+  }
+  
+  static get parameterDescriptors() {
+    return [
+      {
+        name: "steps",
+        defaultValue: 8,
+        minValue: 2,
+        maxValue: 8,
+        automationRate: "k-rate"
+      }
+    ]
   }
 }
 
