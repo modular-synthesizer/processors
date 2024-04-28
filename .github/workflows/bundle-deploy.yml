@@ -19,6 +19,11 @@ jobs:
       -
         name: Install dependencies
         run: pnpm i
-      - run: echo "Bundling the Typescript processors as Javascript files"
-      - run: tsc
-      - run: echo "Bundling done successfully"
+      -
+        name: Transpile the processors into Javascript
+        run: tsc
+      -
+        name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: "dist/"
