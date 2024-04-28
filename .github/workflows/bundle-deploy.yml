@@ -15,13 +15,13 @@ jobs:
           node-version: 18.17.x
       -
         name: Install pnpm globally
-        run: npm i -g pnpm typescript
+        run: npm i -g pnpm
       -
         name: Install dependencies
         run: pnpm i
       -
         name: Transpile the processors into Javascript
-        run: tsc
+        run: pnpm run build
       -
         name: Upload artifact
         uses: actions/upload-pages-artifact@v3
