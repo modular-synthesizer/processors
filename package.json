@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "static-server"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "static-server": "^2.2.1",
     "typescript": "^5.4.5"
   }
 }
