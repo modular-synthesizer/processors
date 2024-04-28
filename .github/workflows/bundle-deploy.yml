@@ -1,0 +1,10 @@
+name: Bundle and deploy the processors on the Scaleway S3
+run-name: ${{ github.actor }} is bundling and deploying the audio processors
+on: [push]
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Bundling the Typescript processors as Javascript files"
+      - run: tsc
+      - run: echo "Bundling done successfully"
