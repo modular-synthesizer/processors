@@ -12,8 +12,7 @@ declare class Frame {
     get state(): State;
     get value(): number;
 }
-type audioBuffer = Float32Array[][];
 declare class EnvelopeProcessor extends AudioWorkletProcessor {
     private previous;
-    process(inputs: audioBuffer, outputs: audioBuffer, _: any): boolean;
+    process(inputs: Float32Array[][], outputs: Float32Array[][], _: any): boolean;
 }

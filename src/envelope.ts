@@ -32,13 +32,11 @@ class Frame {
   }
 }
 
-type audioBuffer = Float32Array[][];
-
 class EnvelopeProcessor extends AudioWorkletProcessor {
 
   private previous: Frame = new Frame(Number.MIN_VALUE);
 
-  process (inputs: audioBuffer, outputs: audioBuffer, _: any) {
+  process (inputs: Float32Array[][], outputs: Float32Array[][], _: any) {
     for (let i: number = 0; i < 128 ; ++i) {
       const current = new Frame(inputs[0][0][i]);
       if (this.previous.state !== current.state && current.state !== State.DEFAULT) {
