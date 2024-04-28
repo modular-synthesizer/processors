@@ -5,6 +5,20 @@ jobs:
   bundle:
     runs-on: ubuntu-latest
     steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Setyp node
+        uses: actions/seup-node@v4
+        with:
+          node-version: 18.17.x
+      -
+        name: Install pnpm globally
+        run: npm i -g pnpm typescript
+      -
+        name: Install dependencies
+        run: pnpm i
       - run: echo "Bundling the Typescript processors as Javascript files"
       - run: tsc
       - run: echo "Bundling done successfully"
