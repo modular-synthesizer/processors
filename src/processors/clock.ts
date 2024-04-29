@@ -1,3 +1,5 @@
+import { AudioWorkletProcessor, registerProcessor, AudioParamDescriptor } from "../utils/types/webaudioapi"
+
 const DEFAULT_FREQUENCY = 2;
 
 /**

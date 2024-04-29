@@ -1,3 +1,5 @@
+import { AudioWorkletProcessor, registerProcessor, AudioParamDescriptor } from "../utils/types/webaudioapi"
+
 class GateProcessor extends AudioWorkletProcessor {
 
   static get parameterDescriptors(): AudioParamDescriptor[] {

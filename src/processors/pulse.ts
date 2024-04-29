@@ -1,10 +1,12 @@
+import { AudioWorkletProcessor, registerProcessor } from "../utils/types/webaudioapi"
+
 /**
  * The outputs of the processor are :
  * - [0] the main output for the pulses triggered by the user.
  * The events of the processor are :
  * - [pulse] to trigger a pulse.
  */
-class PulseProcessor extends AudioWorkletProcessor {
+export class PulseProcessor extends AudioWorkletProcessor {
   nextValue = 0;
 
   constructor(...args) {
@@ -23,5 +25,3 @@ class PulseProcessor extends AudioWorkletProcessor {
     return true;
   }
 }
-
-registerProcessor("pulse", PulseProcessor);

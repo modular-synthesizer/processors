@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2019",
-    "declaration": true,
-    "outDir": "./dist",
-    "resolveJsonModule": true
+    "module": "amd",
+    "lib": ["es5", "es6", "dom"],
+    "rootDir": "src",
   },
   "include": [
-    "src/**/*",
-    "src/**/*.json"
+    "src/**/*.ts"
   ]
 }

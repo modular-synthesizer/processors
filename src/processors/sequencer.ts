@@ -1,3 +1,5 @@
+import { AudioWorkletProcessor, registerProcessor, AudioParamDescriptor } from "../utils/types/webaudioapi"
+
 /**
  * The inputs of the processor are :
  * - [0] the clock port, each pulse sent here triggers the next step.

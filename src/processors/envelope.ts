@@ -1,11 +1,8 @@
+import { log } from '../utils/functions/log'
+import { AudioWorkletProcessor, registerProcessor } from "../utils/types/webaudioapi"
+
 const MAX_THRESHOLD = 0.5
 const MIN_THRESHOLD = - MAX_THRESHOLD
-
-function log(message: string) {
-  const dt = new Date();
-  const formattedDate = `${dt.getHours()}:${dt.getMinutes()}:${dt.getSeconds()}.${dt.getMilliseconds()}`;
-  console.log(`${formattedDate} ${message}`)
-}
 
 enum State {
   DEFAULT = "DEFAULT",
@@ -32,7 +29,7 @@ class Frame {
   }
 }
 
-class EnvelopeProcessor extends AudioWorkletProcessor {
+export class EnvelopeProcessor extends AudioWorkletProcessor {
 
   private previous: Frame = new Frame(Number.MIN_VALUE);
 
@@ -47,5 +44,3 @@ class EnvelopeProcessor extends AudioWorkletProcessor {
     return true;
   }
 }
-
-registerProcessor("adsr", EnvelopeProcessor);
