@@ -1,8 +1,8 @@
-interface AudioWorkletProcessor {
+export interface AudioWorkletProcessor {
   readonly port: MessagePort;
 }
 
-interface AudioWorkletProcessorImpl extends AudioWorkletProcessor {
+export interface AudioWorkletProcessorImpl extends AudioWorkletProcessor {
   process(
       inputs: Float32Array[][],
       outputs: Float32Array[][],
@@ -10,12 +10,12 @@ interface AudioWorkletProcessorImpl extends AudioWorkletProcessor {
   ): boolean;
 }
 
-declare var AudioWorkletProcessor: {
+export declare var AudioWorkletProcessor: {
   prototype: AudioWorkletProcessor;
   new (options?: AudioWorkletNodeOptions): AudioWorkletProcessor;
 };
 
-type AudioParamDescriptor = {
+export type AudioParamDescriptor = {
   name: string,
   automationRate: AutomationRate,
   minValue: number,
@@ -23,12 +23,12 @@ type AudioParamDescriptor = {
   defaultValue: number
 }
 
-interface AudioWorkletProcessorConstructor {
+export interface AudioWorkletProcessorConstructor {
   new (options?: AudioWorkletNodeOptions): AudioWorkletProcessorImpl;
   parameterDescriptors?: AudioParamDescriptor[];
 }
 
-declare function registerProcessor(
+export declare function registerProcessor(
   name: string,
   processorCtor: AudioWorkletProcessorConstructor,
 ): void;

@@ -1,3 +1,5 @@
+import { AudioParamDescriptor } from "../utils/types/webaudioapi"
+
 /**
  * The inputs of the processor are :
  * - [0] the clock port, each pulse sent here triggers the next step.
@@ -9,7 +11,8 @@
  * The parameters of the processor are :
  * - [steps] the number of steps before resetting the count.
  */
-class SequencerProcessor extends AudioWorkletProcessor {
+// @ts-ignore
+export class SequencerProcessor extends AudioWorkletProcessor {
 
   step = 0;
 
@@ -55,5 +58,3 @@ class SequencerProcessor extends AudioWorkletProcessor {
     ]
   }
 }
-
-registerProcessor("sequencer", SequencerProcessor);

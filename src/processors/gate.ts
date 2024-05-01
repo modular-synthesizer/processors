@@ -1,4 +1,7 @@
-class GateProcessor extends AudioWorkletProcessor {
+import { AudioParamDescriptor } from "../utils/types/webaudioapi";
+
+// @ts-ignore
+export class GateProcessor extends AudioWorkletProcessor {
 
   static get parameterDescriptors(): AudioParamDescriptor[] {
     return [
@@ -49,5 +52,3 @@ class GateProcessor extends AudioWorkletProcessor {
     return inputs[position][channel][index] === 1;
   }
 }
-
-registerProcessor("trig2gate", GateProcessor);

@@ -4,8 +4,11 @@
  * The events of the processor are :
  * - [pulse] to trigger a pulse.
  */
-class PulseProcessor extends AudioWorkletProcessor {
+// @ts-ignore
+export class PulseProcessor extends AudioWorkletProcessor {
   nextValue = 0;
+
+  public readonly port: MessagePort;
 
   constructor(...args) {
     super(...args);
@@ -23,5 +26,3 @@ class PulseProcessor extends AudioWorkletProcessor {
     return true;
   }
 }
-
-registerProcessor("pulse", PulseProcessor);
