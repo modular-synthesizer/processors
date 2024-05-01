@@ -1,5 +1,4 @@
 import { log } from '../utils/functions/log'
-import { AudioWorkletProcessor, registerProcessor } from "../utils/types/webaudioapi"
 
 const MAX_THRESHOLD = 0.5
 const MIN_THRESHOLD = - MAX_THRESHOLD
@@ -29,6 +28,7 @@ class Frame {
   }
 }
 
+// @ts-ignore
 export class EnvelopeProcessor extends AudioWorkletProcessor {
 
   private previous: Frame = new Frame(Number.MIN_VALUE);

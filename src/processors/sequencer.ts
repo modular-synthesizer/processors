@@ -1,4 +1,4 @@
-import { AudioWorkletProcessor, registerProcessor, AudioParamDescriptor } from "../utils/types/webaudioapi"
+import { AudioParamDescriptor } from "../utils/types/webaudioapi"
 
 /**
  * The inputs of the processor are :
@@ -11,7 +11,8 @@ import { AudioWorkletProcessor, registerProcessor, AudioParamDescriptor } from "
  * The parameters of the processor are :
  * - [steps] the number of steps before resetting the count.
  */
-class SequencerProcessor extends AudioWorkletProcessor {
+// @ts-ignore
+export class SequencerProcessor extends AudioWorkletProcessor {
 
   step = 0;
 
@@ -57,5 +58,3 @@ class SequencerProcessor extends AudioWorkletProcessor {
     ]
   }
 }
-
-registerProcessor("sequencer", SequencerProcessor);

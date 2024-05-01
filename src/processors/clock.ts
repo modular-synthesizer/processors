@@ -1,4 +1,4 @@
-import { AudioWorkletProcessor, registerProcessor, AudioParamDescriptor } from "../utils/types/webaudioapi"
+import { AudioParamDescriptor } from "../utils/types/webaudioapi"
 
 const DEFAULT_FREQUENCY = 2;
 
@@ -12,7 +12,8 @@ const DEFAULT_FREQUENCY = 2;
  * The parameters of the processor are :
  * - [frequency] the number of impulses the clock will have per seconds.
  */
-class ClockProcessor extends AudioWorkletProcessor {
+// @ts-ignore
+export class ClockProcessor extends AudioWorkletProcessor {
   
   static get parameterDescriptors(): AudioParamDescriptor[] {
     return [
@@ -72,5 +73,3 @@ class ClockProcessor extends AudioWorkletProcessor {
     return 0;
   }
 }
-
-registerProcessor("clock", ClockProcessor);
