@@ -1,11 +1,11 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
+  mode: process.env.WEBPACK_MODE || 'production',
   devtool: 'inline-source-map',
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: "[name].js" // <--- Will be compiled to this single file
+    filename: "processors.js"
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
