@@ -1,43 +1,58 @@
-import { log } from '../utils/functions/log'
-
-const MAX_THRESHOLD = 0.5
-const MIN_THRESHOLD = - MAX_THRESHOLD
-
-enum State {
-  DEFAULT = "DEFAULT",
-  TRIGGERED = "TRIGGERED",
-  RELEASED = "RELEASED"
-}
-
-class Frame {
-
-  private _value: number;
-
-  constructor(value: number) {
-    this._value = value;
-  }
-  
-  public get state(): State {
-    if (this._value > MAX_THRESHOLD) return State.TRIGGERED;
-    if (this._value < MIN_THRESHOLD) return State.RELEASED;
-    return State.DEFAULT;
-  }
-
-  public get value(): number {
-    return this._value;
-  }
-}
+import { Frame, State, Thresholds } from '../utils/frame';
+import { AudioParamDescriptor } from '../utils/types/webaudioapi';
 
 // @ts-ignore
 export class EnvelopeProcessor extends AudioWorkletProcessor {
+  
+  static get parameterDescriptors(): AudioParamDescriptor[] {
+    return [
+      {
+        name: "attack",
+        defaultValue: 50,
+        minValue: 1,
+        maxValue: 10000,
+        automationRate: "k-rate"
+      },
+      {
+        name: "decay",
+        defaultValue: 50,
+        minValue: 1,
+        maxValue: 10000,
+        automationRate: "k-rate"
+      },
+      {
+        name: "sustain",
+        defaultValue: 70,
+        minValue: 0,
+        maxValue: 100,
+        automationRate: "k-rate"
+      },
+      {
+        name: "release",
+        defaultValue: 50,
+        minValue: 1,
+        maxValue: 10000,
+        automationRate: "k-rate"
+      }
+    ]
+  }
 
-  private previous: Frame = new Frame(Number.MIN_VALUE);
+  public get thresolds(): Thresholds {
+    return { trigger: 0.9, release: 0.1 }
+  }
+
+  private previous: Frame = new Frame(Number.MIN_VALUE, this.thresolds);
 
   process (inputs: Float32Array[][], outputs: Float32Array[][], _: any) {
     for (let i: number = 0; i < 128 ; ++i) {
-      const current = new Frame(inputs[0][0][i]);
-      if (this.previous.state !== current.state && current.state !== State.DEFAULT) {
-        log(`New state : ${current.state}`)
+      const current = new Frame(inputs[0][0][i], this.thresolds, this.previous);
+      if (this.previous.state !== current.state) {
+        if (current.state === State.TRIGGERED) {
+          console.log("triggering")
+        }
+        else if (current.state === State.RELEASED) {
+          console.log("releasing");
+        }
       }
       this.previous = current;
     }

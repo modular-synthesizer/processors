@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf dist/ && webpack",
+    "watch": "rm -rf dist/ && webpack --watch",
     "dev": "static-server -c '*'"
   },
   "keywords": [],
