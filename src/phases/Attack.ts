@@ -1,3 +1,4 @@
+import { Decay } from "./Decay";
 import { Phase } from "./Phase";
 
 export class Attack extends Phase {
