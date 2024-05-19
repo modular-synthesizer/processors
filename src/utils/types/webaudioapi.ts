@@ -26,8 +26,6 @@ export type AudioParamDescriptor = {
 export interface AudioWorkletProcessorConstructor {
   new (options?: AudioWorkletNodeOptions): AudioWorkletProcessorImpl;
   parameterDescriptors?: AudioParamDescriptor[];
-
-  readonly port: MessagePort;
 }
 
 export declare function registerProcessor(

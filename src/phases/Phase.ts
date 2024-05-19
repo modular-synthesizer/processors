@@ -14,12 +14,12 @@ export abstract class Phase {
 
   public get step(): number {
     this.elapsed += 1;
-    return this.compute()
+    const value: number = this.compute();
+    this.checkState();
+    return value;
   }
+
+  abstract checkState(): void;
 
   abstract compute(): number;
-
-  public trigger(): void {
-    this.elapsed = -1;
-  }
 }

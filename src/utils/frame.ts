@@ -17,8 +17,6 @@ export type Thresholds = {
 }
 
 export class Frame implements IClonable<Frame> {
-  private previous?: Frame;
-
   public readonly thresholds: Thresholds;
 
   public readonly value: number;
@@ -26,7 +24,6 @@ export class Frame implements IClonable<Frame> {
   public constructor(value: number, thresholds: Thresholds, previous?: Frame) {
     this.value = value;
     this.thresholds = thresholds;
-    this.previous = previous;
   }
   
   public get state(): State {

@@ -1,4 +1,4 @@
-import { Attack } from '../phases/Attack';
+import NullPhase from '../phases/NullPhase';
 import { Phase } from '../phases/Phase';
 import { Frame, State, Thresholds } from '../utils/frame';
 import { log } from '../utils/functions/log';
@@ -11,14 +11,14 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
     return [
       {
         name: "attack",
-        defaultValue: 10,
+        defaultValue: 1000,
         minValue: 1,
         maxValue: 10000,
         automationRate: "k-rate"
       },
       {
         name: "decay",
-        defaultValue: 50,
+        defaultValue: 1000,
         minValue: 1,
         maxValue: 10000,
         automationRate: "k-rate"
@@ -52,7 +52,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
 
   private _sampleRate: number = 48000;
 
-  private phase: Phase;
+  private phase: Phase = new NullPhase(this);
 
   public param(name: string, index: number = 0): any {
     return this.parameters[name][index];
@@ -66,8 +66,16 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
     return this._sampleRate;
   }
 
-  public constructor(...args) {
-    super(...args); this.phase = new Attack(this);
+  public get justChanged(): boolean {
+    return this.previous.state !== this.current.state
+  }
+
+  public get justTriggered(): boolean {
+    return this.justChanged && this.current.state === State.TRIGGERED;
+  }
+
+  public get justReleased(): boolean {
+    return this.justChanged && this.current.state === State.RELEASED;
   }
 
   process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {
@@ -77,14 +85,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
     for (let i: number = 0; i < 128 ; ++i) {
       this.current = new Frame(inputs[0][0][i], this.thresolds, this.previous);
       if (this.previous.state !== this.current.state) {
-        if (this.current.state === State.TRIGGERED) {
-          // @ts-ignore
-          log(this.sampleRate)
-          this.phase.trigger();
-        }
-        else if (this.current.state === State.RELEASED) {
-          log("releasing");
-        }
+        log("going from " + this.previous.state + " to " + this.current.state);
       }
       outputs[0][0][i] = this.phase.step;
       this.previous = this.current;
@@ -94,6 +95,10 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
 
   public get state(): State {
     return this.current.state;
+  }
+
+  public setPhase(phase: Phase) {
+    this.phase = phase;
   }
 
 }
