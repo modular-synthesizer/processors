@@ -10,6 +10,7 @@ export default class Release extends Phase {
   public constructor(processor: EnvelopeProcessor, sampleRate: number) {
     super(processor, sampleRate);
     log("Creating the release and triggering it");
+    log('sustain : ' + this.sustain + " " + this.processor.param("sustain"))
   }
 
   public get duration(): number {
@@ -18,7 +19,7 @@ export default class Release extends Phase {
   }
 
   checkState(): void {
-    if (this.processor.justTriggered) {
+    if (this.processor.state === State.TRIGGERED) {
       this.processor.setPhase(new Attack(this.processor, this.sampleRate))
     }
     else if (this.elapsed >= this.duration) {
@@ -27,8 +28,7 @@ export default class Release extends Phase {
   }
 
   public get sustain(): number {
-    if (this.processor.state === State.TRIGGERED) this.processor.param('sustain') / 100;
-    return 0;
+    return this.processor.param('sustain') / 100;
   }
   
   compute(): number {

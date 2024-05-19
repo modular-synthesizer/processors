@@ -1,4 +1,5 @@
 import { EnvelopeProcessor } from "../processors/envelope";
+import { State } from "../utils/frame";
 import { log } from "../utils/functions/log";
 import { Attack } from "./Attack";
 import { Phase } from "./Phase";
@@ -15,7 +16,7 @@ export default class NullPhase extends Phase {
   }
 
   public checkState(): void {
-    if (this.processor.justTriggered) {
+    if (this.processor.state === State.TRIGGERED) {
       this.processor.setPhase(new Attack(this.processor, this.sampleRate));
     }
   }

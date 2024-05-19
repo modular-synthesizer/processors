@@ -1,15 +1,15 @@
-import { EnvelopeProcessor } from "../processors/envelope";
 import { State } from "../utils/frame";
-import { log } from "../utils/functions/log";
-import NullPhase from "./NullPhase";
 import Sustain from "./Sustain";
 import { Phase } from "./Phase";
+import NullPhase from "./NullPhase";
+import { EnvelopeProcessor } from "../processors/envelope";
+import { log } from "../utils/functions/log";
 
 export class Decay extends Phase {
 
-  public constructor(processor: EnvelopeProcessor, sampleRate: number) {
+  public constructor(processor: EnvelopeProcessor, sampleRate: number = 48000) {
     super(processor, sampleRate);
-    log("Creating the decay and triggering it");
+    log('' + this.duration);
   }
 
   public get duration(): number {
@@ -18,16 +18,17 @@ export class Decay extends Phase {
   }
 
   public get sustain(): number {
-    if (this.processor.state === State.TRIGGERED) this.processor.param('sustain') / 100;
-    return 0;
+    return this.processor.param('sustain') / 100;
   }
 
   public compute(): number {
     if (this.elapsed >= this.duration) return 0;
     
-    const delta: number = 1 - this.sustain;
-    const ratio: number = - this.elapsed / this.duration;
+    const delta: number = this.sustain;
+    const ratio: number = (1 - this.sustain) * ((this.duration - this.elapsed) / this.duration);
+    const val: number = delta + ratio
 
+    if (this.elapsed % 100 === 0) log('' + delta + " " + ratio + " " + val);
     return delta + ratio;
   }
 

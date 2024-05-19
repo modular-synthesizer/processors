@@ -8,12 +8,15 @@ export default class Decay extends Phase {
   public constructor(processor: EnvelopeProcessor, sampleRate: number) {
     super(processor, sampleRate);
     log("Creating the sustain and triggering it");
+    log('sustain : ' + this.processor.param("sustain"))
   }
+  
   checkState(): void {
     if (this.processor.state === State.RELEASED) {
       this.processor.setPhase(new Release(this.processor, this.sampleRate));
     }
   }
+
   compute(): number {
     return this.processor.param("sustain") / 100;
   }
