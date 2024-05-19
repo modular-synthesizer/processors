@@ -1,7 +1,6 @@
 import NullPhase from '../phases/NullPhase';
 import { Phase } from '../phases/Phase';
 import { Frame, State, Thresholds } from '../utils/frame';
-import { log } from '../utils/functions/log';
 import { AudioParamDescriptor } from '../utils/types/webaudioapi';
 
 // @ts-ignore
@@ -71,17 +70,11 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
     // @ts-ignore
     this._sampleRate = sampleRate;
     this.parameters = parameters;
-    let value: number;
     for (let i: number = 0; i < 128 ; ++i) {
       this.current = new Frame(inputs[0][0][i], this.thresolds, this.previous);
-      if (this.previous.state !== this.current.state) {
-        log("going from " + this.previous.state + " to " + this.current.state);
-      }
-      value = this.phase.step;
-      outputs[0][0][i] = value;
+      outputs[0][0][i] = this.phase.step;
       this.previous = this.current;
     }
-    // if (!(this.phase instanceof NullPhase)) log("" + value);
     return true;
   }
 

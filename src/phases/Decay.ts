@@ -2,16 +2,8 @@ import { State } from "../utils/frame";
 import Sustain from "./Sustain";
 import { Phase } from "./Phase";
 import NullPhase from "./NullPhase";
-import { EnvelopeProcessor } from "../processors/envelope";
-import { log } from "../utils/functions/log";
 
 export class Decay extends Phase {
-
-  public constructor(processor: EnvelopeProcessor, sampleRate: number = 48000) {
-    super(processor, sampleRate);
-    log('' + this.duration);
-  }
-
   public get duration(): number {
     const decayTime: number =  this.processor.param('decay');
     return (this.sampleRate / 1000) * decayTime;
@@ -26,9 +18,6 @@ export class Decay extends Phase {
     
     const delta: number = this.sustain;
     const ratio: number = (1 - this.sustain) * ((this.duration - this.elapsed) / this.duration);
-    const val: number = delta + ratio
-
-    if (this.elapsed % 100 === 0) log('' + delta + " " + ratio + " " + val);
     return delta + ratio;
   }
 
