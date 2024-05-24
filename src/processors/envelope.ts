@@ -70,6 +70,8 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
     // @ts-ignore
     this._sampleRate = sampleRate;
     this.parameters = parameters;
+
+    if (inputs[0].length === 0) return true;
     for (let i: number = 0; i < 128 ; ++i) {
       this.current = new Frame(inputs[0][0][i], this.thresolds, this.previous);
       outputs[0][0][i] = this.phase.step;
