@@ -10,6 +10,27 @@ export class BitcrusherProcessor extends AudioWorkletProcessor {
         minValue: 1,
         maxValue: 10e4,
         automationRate: 'k-rate'
+      },
+      {
+        name: 'precision',
+        defaultValue: 25,
+        minValue: 3,
+        maxValue: 1000,
+        automationRate: 'k-rate'
+      },
+      {
+        name: 'min',
+        defaultValue: 10,
+        minValue: 3,
+        maxValue: 1000,
+        automationRate: 'k-rate'
+      },
+      {
+        name: 'max',
+        defaultValue: 10,
+        minValue: 3,
+        maxValue: 1000,
+        automationRate: 'k-rate'
       }
     ]
   }
@@ -28,7 +49,7 @@ export class BitcrusherProcessor extends AudioWorkletProcessor {
     for (let i = 0; i < 128; ++i) {
       // We should trigger the effect, so change the stored value.
       if (this.currentFrame >= this.nextTrigger) {
-        this.value = inputs[0][0][i];
+        this.value = this.clamp(inputs[0][0][i], parameters);
         this.nextTrigger += parameters['reductionFactor'][0];
       }
 
@@ -37,4 +58,13 @@ export class BitcrusherProcessor extends AudioWorkletProcessor {
     }
     return true;
   }
+
+  clamp(value: number, parameters: Record<string, Float32Array>) {
+    const min: number = parameters['min'][0];
+    const precision: number = parameters['precision'][0];
+    const max: number = parameters['max'][0];
+    
+    const step = (max - min) / (precision - 1);
+    return Math.round(value / step) * step;
+}
 }
