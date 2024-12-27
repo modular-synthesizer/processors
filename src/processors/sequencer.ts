@@ -4,6 +4,11 @@ enum SequencerMode {
   RANDOM, STANDARD
 }
 
+const modes = [
+  SequencerMode.STANDARD,
+  SequencerMode.RANDOM,
+];
+
 /**
  * The inputs of the processor are :
  * - [0] the clock port, each pulse sent here triggers the next step.
@@ -18,25 +23,9 @@ enum SequencerMode {
 // @ts-ignore
 export class SequencerProcessor extends AudioWorkletProcessor {
 
-  step = 0;
+  private step: number = 0;
 
   public readonly port: MessagePort;
-
-  private mode: SequencerMode = SequencerMode.STANDARD;
-
-  constructor(...args) {
-    super(...args);
-    this.port.onmessage = ({ data }) => {
-      switch(data) {
-        case 'mode.random':
-          this.mode = SequencerMode.RANDOM;
-          break;
-        case 'mode.standard':
-          this.mode = SequencerMode.STANDARD;
-          break;
-      }
-    }
-  }
 
   process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {
     const steps = parameters["steps"][0] - 1;
@@ -50,7 +39,7 @@ export class SequencerProcessor extends AudioWorkletProcessor {
       if (resetSignal) this.step = 0;
 
       if (clockSignal && runSignal === 1) {
-        this.step = this.nextStep(parameters);
+        this.step = this.computeNextStep(parameters, i);
       }
 
       outputs[this.step][0][i] = runSignal;
@@ -58,12 +47,13 @@ export class SequencerProcessor extends AudioWorkletProcessor {
     return true;
   }
 
-  nextStep(parameters: Record<string, Float32Array>) {
-    const steps = parameters["steps"][0] - 1;
-    if (this.mode === SequencerMode.STANDARD) {
+  computeNextStep(parameters: Record<string, Float32Array>, i: number) {
+    const steps = parameters["mode"][0];
+    const mode = modes[Math.round(parameters["mode"][0])];
+    if (mode === SequencerMode.STANDARD) {
       return (this.step >= steps) ? 0 : (this.step + 1);
     }
-    else if (this.mode === SequencerMode.RANDOM) {
+    else if (mode === SequencerMode.RANDOM) {
       return Math.floor(Math.random() * steps);
     }
   }
@@ -86,7 +76,14 @@ export class SequencerProcessor extends AudioWorkletProcessor {
         minValue: 2,
         maxValue: 8,
         automationRate: "k-rate"
-      }
+      },
+      {
+        name: 'mode',
+        defaultValue: 0,
+        minValue: 0,
+        maxValue: 1,
+        automationRate: 'k-rate'
+      },
     ]
   }
 }
