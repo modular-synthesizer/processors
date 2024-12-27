@@ -1,5 +1,9 @@
 import { AudioParamDescriptor } from "../utils/types/webaudioapi"
 
+enum SequencerMode {
+  RANDOM, STANDARD
+}
+
 /**
  * The inputs of the processor are :
  * - [0] the clock port, each pulse sent here triggers the next step.
@@ -16,6 +20,24 @@ export class SequencerProcessor extends AudioWorkletProcessor {
 
   step = 0;
 
+  public readonly port: MessagePort;
+
+  private mode: SequencerMode = SequencerMode.STANDARD;
+
+  constructor(...args) {
+    super(...args);
+    this.port.onmessage = ({ data }) => {
+      switch(data) {
+        case 'mode.random':
+          this.mode = SequencerMode.RANDOM;
+          break;
+        case 'mode.standard':
+          this.mode = SequencerMode.STANDARD;
+          break;
+      }
+    }
+  }
+
   process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {
     const steps = parameters["steps"][0] - 1;
 
@@ -28,12 +50,22 @@ export class SequencerProcessor extends AudioWorkletProcessor {
       if (resetSignal) this.step = 0;
 
       if (clockSignal && runSignal === 1) {
-        this.step = (this.step >= steps) ? 0 : (this.step + 1);
+        this.step = this.nextStep(parameters);
       }
 
       outputs[this.step][0][i] = runSignal;
     }
     return true;
+  }
+
+  nextStep(parameters: Record<string, Float32Array>) {
+    const steps = parameters["steps"][0] - 1;
+    if (this.mode === SequencerMode.STANDARD) {
+      return (this.step >= steps) ? 0 : (this.step + 1);
+    }
+    else if (this.mode === SequencerMode.RANDOM) {
+      return Math.floor(Math.random() * steps);
+    }
   }
 
   parse(inputs, position, channel, index, defaultValue = 0) {
