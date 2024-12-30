@@ -27,7 +27,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
         defaultValue: 50,
         minValue: 0,
         maxValue: 100,
-        automationRate: "k-rate"
+        automationRate: "a-rate"
       },
       {
         name: "release",
@@ -74,7 +74,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
     if (inputs[0].length === 0) return true;
     for (let i: number = 0; i < 128 ; ++i) {
       this.current = new Frame(inputs[0][0][i], this.thresolds, this.previous);
-      outputs[0][0][i] = this.phase.step;
+      outputs[0][0][i] = this.phase.step(i);
       this.previous = this.current;
     }
     return true;

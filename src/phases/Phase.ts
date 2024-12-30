@@ -12,14 +12,14 @@ export abstract class Phase {
     this.sampleRate = sampleRate;
   }
 
-  public get step(): number {
+  public step(index: number = 0): number {
     this.elapsed += 1;
-    const value: number = this.compute();
+    const value: number = this.compute(index);
     this.checkState();
     return value;
   }
 
   abstract checkState(): void;
 
-  abstract compute(): number;
+  abstract compute(index: number): number;
 }

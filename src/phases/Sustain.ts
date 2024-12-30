@@ -10,8 +10,8 @@ export default class Sustain extends Phase {
     }
   }
 
-  compute(): number {
-    return this.processor.param("sustain") / 100;
+  public override compute(index: number = 0): number {
+    return this.processor.param("sustain", index) / 100;
   }
 
 }

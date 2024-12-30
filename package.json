@@ -6,14 +6,13 @@
   "scripts": {
     "build": "rm -rf dist/ && webpack",
     "watch": "rm -rf dist/ && webpack --watch",
-    "dev": "static-server -c '*'"
+    "dev": "http-server --cors"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http-server": "^14.1.1",
-    "static-server": "^2.2.1"
+    "http-server": "^14.1.1"
   },
   "devDependencies": {
     "ts-loader": "^9.5.1",
