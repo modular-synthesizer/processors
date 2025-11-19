@@ -1,4 +1,4 @@
-name: Bundle and deploy the processors on the Scaleway S3
+name: Bundle and deploy the processors on Github Pages
 run-name: ${{ github.actor }} is bundling and deploying the audio processors
 on: [push]
 jobs:
