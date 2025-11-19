@@ -1,4 +1,4 @@
-import { AudioParamDescriptor } from "../utils/types/webaudioapi";
+import type { AudioParamDescriptor } from "../utils/types/webaudioapi";
 
 // @ts-ignore
 export class GateProcessor extends AudioWorkletProcessor {
@@ -24,7 +24,7 @@ export class GateProcessor extends AudioWorkletProcessor {
 
   process (inputs, outputs, parameters) {
     // @ts-ignore
-    this.duration = sampleRate / 1000 * parameters["duration"][0];
+    this.duration = sampleRate / 1000 * parameters.duration[0];
 
     for (let i = 0; i < 128; ++i) {
 

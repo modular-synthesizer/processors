@@ -4,7 +4,7 @@ import { Phase } from "./Phase";
 
 export default class NullPhase extends Phase {
 
-  public override compute(_index: number = 0): number {
+  public override compute(_index = 0): number {
     return 0;
   }
 

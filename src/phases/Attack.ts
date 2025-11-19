@@ -7,7 +7,7 @@ export class Attack extends Phase {
     return (this.sampleRate / 1000) * attackTime;
   }
 
-  public override compute(_index: number = 0): number {
+  public override compute(_index = 0): number {
     if (this.elapsed >= this.duration) return 0;
     return this.elapsed / this.duration;
   }

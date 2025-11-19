@@ -23,7 +23,7 @@ export default class Release extends Phase {
     return this.processor.param('sustain') / 100;
   }
   
-  public override compute(_index: number = 0): number {
+  public override compute(_index = 0): number {
     return this.sustain * (1 - (this.elapsed / this.duration));
   }
   

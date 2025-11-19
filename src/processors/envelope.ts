@@ -1,7 +1,7 @@
 import NullPhase from '../phases/NullPhase';
-import { Phase } from '../phases/Phase';
-import { Frame, State, Thresholds } from '../utils/frame';
-import { AudioParamDescriptor } from '../utils/types/webaudioapi';
+import type { Phase } from '../phases/Phase';
+import { Frame, type State, type Thresholds } from '../utils/frame';
+import type { AudioParamDescriptor } from '../utils/types/webaudioapi';
 
 // @ts-ignore
 export class EnvelopeProcessor extends AudioWorkletProcessor {
@@ -54,11 +54,11 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
 
   private parameters: Record<string, Float32Array>;
 
-  private _sampleRate: number = 48000;
+  private _sampleRate = 48000;
 
   private phase: Phase;
 
-  public param(name: string, index: number = 0): any {
+  public param(name: string, index = 0) {
     return this.parameters[name][index];
   }
 
@@ -72,7 +72,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
     this.parameters = parameters;
 
     if (inputs[0].length === 0) return true;
-    for (let i: number = 0; i < 128 ; ++i) {
+    for (let i = 0; i < 128 ; ++i) {
       this.current = new Frame(inputs[0][0][i], this.thresolds, this.previous);
       outputs[0][0][i] = this.phase.step(i);
       this.previous = this.current;

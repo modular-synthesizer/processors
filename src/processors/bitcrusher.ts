@@ -1,4 +1,4 @@
-import { AudioParamDescriptor } from "../utils/types/webaudioapi";
+import type { AudioParamDescriptor } from "../utils/types/webaudioapi";
 
 // @ts-ignore
 export class BitcrusherProcessor extends AudioWorkletProcessor {
@@ -50,7 +50,7 @@ export class BitcrusherProcessor extends AudioWorkletProcessor {
       // We should trigger the effect, so change the stored value.
       if (this.currentFrame >= this.nextTrigger) {
         this.value = this.clamp(inputs[0][0][i], parameters);
-        this.nextTrigger += parameters['reductionFactor'][0];
+        this.nextTrigger += parameters.reductionFactor[0];
       }
 
       outputs[0][0][i] = this.value;
@@ -60,9 +60,9 @@ export class BitcrusherProcessor extends AudioWorkletProcessor {
   }
 
   clamp(value: number, parameters: Record<string, Float32Array>) {
-    const min: number = parameters['min'][0];
-    const precision: number = parameters['precision'][0];
-    const max: number = parameters['max'][0];
+    const min: number = parameters.min[0];
+    const precision: number = parameters.precision[0];
+    const max: number = parameters.max[0];
     
     const step = (max - min) / (precision - 1);
     return Math.round(value / step) * step;

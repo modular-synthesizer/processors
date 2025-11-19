@@ -10,7 +10,7 @@ export interface AudioWorkletProcessorImpl extends AudioWorkletProcessor {
   ): boolean;
 }
 
-export declare var AudioWorkletProcessor: {
+export declare const AudioWorkletProcessor: {
   prototype: AudioWorkletProcessor;
   new (options?: AudioWorkletNodeOptions): AudioWorkletProcessor;
 };

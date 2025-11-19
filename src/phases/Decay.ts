@@ -13,7 +13,7 @@ export class Decay extends Phase {
     return this.processor.param('sustain') / 100;
   }
 
-  public override compute(_index: number = 0): number {
+  public override compute(_index = 0): number {
     if (this.elapsed >= this.duration) return 0;
     
     const delta: number = this.sustain;

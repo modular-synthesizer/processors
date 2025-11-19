@@ -1,4 +1,4 @@
-import { AudioParamDescriptor } from "../utils/types/webaudioapi"
+import type { AudioParamDescriptor } from "../utils/types/webaudioapi"
 
 const DEFAULT_FREQUENCY = 2;
 
@@ -50,7 +50,7 @@ export class ClockProcessor extends AudioWorkletProcessor {
         this.lastPulse = 0;
       }
 
-      this.frequency = parameters["frequency"][0];
+      this.frequency = parameters.frequency[0];
       outputs[0][0][i] = this.value;
       this.currentFrame += 1;
     }

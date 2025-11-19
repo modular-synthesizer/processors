@@ -1,4 +1,4 @@
-import { AudioParamDescriptor } from "../utils/types/webaudioapi"
+import type { AudioParamDescriptor } from "../utils/types/webaudioapi"
 
 enum SequencerMode {
   RANDOM = "Random",
@@ -24,7 +24,7 @@ const modes = [
 // @ts-ignore
 export class SequencerProcessor extends AudioWorkletProcessor {
 
-  private step: number = 0;
+  private step = 0;
 
   public readonly port: MessagePort;
 
@@ -47,19 +47,19 @@ export class SequencerProcessor extends AudioWorkletProcessor {
   }
 
   computeNextStep(parameters: Record<string, Float32Array>) {
-    const steps = parameters["steps"][0] - 1;
-    const mode = this.getMode(parameters["mode"][0]);
+    const steps = parameters.steps[0] - 1;
+    const mode = this.getMode(parameters.mode[0]);
     if (mode === SequencerMode.STANDARD) {
       return (this.step >= steps) ? 0 : (this.step + 1);
     }
-    else if (mode === SequencerMode.RANDOM) {
+    if (mode === SequencerMode.RANDOM) {
       return Math.floor(Math.random() * steps);
     }
   }
 
   getMode(mode: number) {
-    if (mode < 0) mode = 0;
-    if (mode > modes.length) mode = modes.length - 1;
+    if (mode < 0) modes[0]
+    if (mode > modes.length) return modes[modes.length - 1];
     return modes[Math.round(mode)];
   }
 
@@ -69,7 +69,7 @@ export class SequencerProcessor extends AudioWorkletProcessor {
     return inputs[position][channel][index];
   }
 
-  triggered(inputs, position, channel, index, defaultValue: number = 0) {
+  triggered(inputs, position, channel, index, defaultValue = 0) {
     return this.parse(inputs, position, channel, index, defaultValue) === 1
   }
   

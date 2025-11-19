@@ -14,7 +14,7 @@ const processors = {
   trig2gate: GateProcessor
 }
 
-for(let k in processors) {
+for(const k in processors) {
   // @ts-ignore
   registerProcessor(k, processors[k]);
 }
