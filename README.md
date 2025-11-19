@@ -21,3 +21,14 @@ There are several available parameters :
 * `min` is the minimum possible value for any given sample.
 * `precision` the precision you wan apply to a number. It is the number of possible values between `min` and `max`.
 * `reductionFactor` is a number representing the number of samples you will merge with one another.
+
+There is only one input (at index 0) and one output (at index 0). They respectively represent the input and the output of the audio signal.
+
+### Clock
+
+The clock generates impulse at a regular rate. The rate is given by the frequency parameter. Impulses are just one sample long, and sends a one instead of the usual 0 the node outputs the rest of the time.
+
+There is only one parameter available :
+* `frequency` the frequency, in "triggers per seconds" (eg: 2 equals two clock triggers per second)
+
+There is only one output (at index 0) that will output zero (0) all the time, except on trigger samples, when it will output one (1).
