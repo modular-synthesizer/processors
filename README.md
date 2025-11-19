@@ -9,3 +9,15 @@ Several new processors have been created :
 * the `gate` processor converts a single trigger signal into a gate continuous signal.
 * the `pulse` processor emits a single sample at a value when triggered
 * the `sequencer`processor is a 8-steps processor with clock, reset, randomizer, and a selectable number of steps.
+
+## Description of the processors
+
+### Bitcrusher
+
+A bitcrusher is an audio node that receives a signal as input, and lowers the sound quality of it. It generally can do this in two different ways : reducing the possible precision of the sample values, or merging samples. In Synple, we implemented both of them at the same time.
+
+There are several available parameters :
+* `max` is the maximum value that the signal can have at any given sample.
+* `min` is the minimum possible value for any given sample.
+* `precision` the precision you wan apply to a number. It is the number of possible values between `min` and `max`.
+* `reductionFactor` is a number representing the number of samples you will merge with one another.
