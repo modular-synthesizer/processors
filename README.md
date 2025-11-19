@@ -32,3 +32,19 @@ There is only one parameter available :
 * `frequency` the frequency, in "triggers per seconds" (eg: 2 equals two clock triggers per second)
 
 There is only one output (at index 0) that will output zero (0) all the time, except on trigger samples, when it will output one (1).
+
+### Envelope
+
+This is a classic ADSR envelope with four phases :
+* _Attack_, that is the phase happenning as soon as the user presses a key on the keyboard; and ramping up a control signal during a given duration. At the end of the duration, the signal is set to 1. The signal ramps up in a linear fashion from instant 0, to instant 0 + duration.
+* _Decay_, that is the phase triggered just after the attack, that goes from the value 1 to the value given with the `sustain` parameter. It ramps down linearly in the same way that the attack does ramp up.
+* _Sustain_, that is the phase that keeps triggering as long as the user keeps the key down. It is set at a given level that corresponds to the value the signal will output constantly.
+* _Release_, that is the phase triggered at the exact moment the user releases the key on the keyboard. It then ramps down the signal from the sustain value to zero linearly.
+
+There are four available parameters :
+* `attack` the duration, in milliseconds, of the attack phase
+* `decay` the duration, in milliseconds, of the decay phase
+* `release`the duration, in milliseconds, of the release phase
+* `sustain` the value, in percent, of the input signal (see the inputs below). Eg: if set to 50, and input signal is 2, the envelope will output 1 at sustain phase.
+
+There are one input (at index 0), representing the signal that will be output during the sustain phase ; and one output, representing the control signal output by the envelope. It is designed to be plugged on a VCA gain parameter, but can be used as any signal.
