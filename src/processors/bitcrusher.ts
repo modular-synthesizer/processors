@@ -20,7 +20,7 @@ export class BitcrusherProcessor extends AudioWorkletProcessor {
       },
       {
         name: 'min',
-        defaultValue: -10,
+        defaultValue: 10,
         minValue: 3,
         maxValue: 1000,
         automationRate: 'k-rate'
