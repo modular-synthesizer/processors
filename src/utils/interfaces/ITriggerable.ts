@@ -1,3 +1,5 @@
-export default interface ITrigerrable {
-  trigger(): void;
+export interface ITriggerable {
+  readonly gate: boolean;
+  readonly rising: boolean;
+  readonly falling: boolean;
 }
