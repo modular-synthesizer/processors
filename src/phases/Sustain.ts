@@ -6,7 +6,7 @@ export default class Sustain extends Phase {
   
   checkState(): void {
     if (this.processor.state === State.RELEASED) {
-      this.processor.setPhase(new Release(this.processor, this.sampleRate));
+      this.processor.setPhase(new Release(this.processor));
     }
   }
 

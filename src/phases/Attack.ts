@@ -1,10 +1,10 @@
+import { frames } from "../utils/functions/framesComputations";
 import { Decay } from "./Decay";
 import { Phase } from "./Phase";
 
 export class Attack extends Phase {
   public get duration(): number {
-    const attackTime: number =  this.processor.param('attack');
-    return (this.sampleRate / 1000) * attackTime;
+    return frames(this.processor.param('attack'), this.sampleRate);
   }
 
   public override compute(_index = 0): number {
@@ -14,7 +14,7 @@ export class Attack extends Phase {
 
   public checkState(): void {
     if (this.elapsed >= this.duration) {
-      this.processor.setPhase(new Decay(this.processor, this.sampleRate));
+      this.processor.setPhase(new Decay(this.processor));
     }
   }
 }

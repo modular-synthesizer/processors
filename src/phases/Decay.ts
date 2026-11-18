@@ -1,3 +1,4 @@
+import { frames } from "../utils/functions/framesComputations";
 import { State } from "../utils/frame";
 import Sustain from "./Sustain";
 import { Phase } from "./Phase";
@@ -5,8 +6,7 @@ import NullPhase from "./NullPhase";
 
 export class Decay extends Phase {
   public get duration(): number {
-    const decayTime: number =  this.processor.param('decay');
-    return (this.sampleRate / 1000) * decayTime;
+    return frames(this.processor.param('decay'), this.sampleRate);
   }
 
   public get sustain(): number {
@@ -24,7 +24,7 @@ export class Decay extends Phase {
   public checkState(): void {
     if (this.elapsed >= this.duration) {
       if (this.processor.state === State.TRIGGERED) {
-        this.processor.setPhase(new Sustain(this.processor, this.sampleRate));
+        this.processor.setPhase(new Sustain(this.processor));
       }
       else {
         this.processor.setPhase(new NullPhase(this.processor));

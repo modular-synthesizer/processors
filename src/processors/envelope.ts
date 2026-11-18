@@ -42,6 +42,8 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
   public constructor(...args) {
     super(...args);
     this.phase = new NullPhase(this);
+    // @ts-ignore
+    this._sampleRate = sampleRate;
   }
 
   public get thresolds(): Thresholds {
@@ -54,7 +56,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
 
   private parameters: Record<string, Float32Array>;
 
-  private _sampleRate = 48000;
+  private readonly _sampleRate: number;
 
   private phase: Phase;
 
@@ -67,8 +69,6 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
   }
 
   process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {
-    // @ts-ignore
-    this._sampleRate = sampleRate;
     this.parameters = parameters;
 
     if (inputs[0].length === 0) return true;

@@ -3,13 +3,14 @@ import type { EnvelopeProcessor } from "../processors/envelope";
 export abstract class Phase {
   protected readonly processor: EnvelopeProcessor;
 
-  protected readonly sampleRate: number = 48000;
+  protected get sampleRate(): number {
+    return this.processor.sampleRate;
+  }
 
   protected elapsed = -1;
 
-  constructor(processor: EnvelopeProcessor, sampleRate = 48000) {
+  constructor(processor: EnvelopeProcessor) {
     this.processor = processor;
-    this.sampleRate = sampleRate;
   }
 
   public step(index = 0): number {

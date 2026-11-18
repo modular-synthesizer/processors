@@ -10,7 +10,7 @@ export default class NullPhase extends Phase {
 
   public checkState(): void {
     if (this.processor.state === State.TRIGGERED) {
-      this.processor.setPhase(new Attack(this.processor, this.sampleRate));
+      this.processor.setPhase(new Attack(this.processor));
     }
   }
 }
