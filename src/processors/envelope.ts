@@ -41,7 +41,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
 
   public constructor(...args) {
     super(...args);
-    this.phase = new NullPhase(this);
+    this.phase = new NullPhase(this, 0);
     // @ts-ignore
     this._sampleRate = sampleRate;
   }
@@ -54,6 +54,8 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
 
   private previous: Frame = new Frame(Number.MIN_VALUE, this.thresolds);
 
+  private lastOutput: number = 0;
+
   private parameters: Record<string, Float32Array>;
 
   private readonly _sampleRate: number;
@@ -61,11 +63,20 @@ export class EnvelopeProcessor extends AudioWorkletProcessor {
   private phase: Phase;
 
   public param(name: string, index = 0) {
-    return this.parameters[name][index];
+    const values = this.parameters[name];
+    return values.length > 1 ? values[index] : values[0];
   }
 
   public get sampleRate(): number {
     return this._sampleRate;
+  }
+
+  public setLastOutput(value: number) {
+    this.lastOutput = value
+  }
+
+  public get from(): number {
+    return this.lastOutput
   }
 
   process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {

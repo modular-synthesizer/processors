@@ -12,19 +12,15 @@ export default class Release extends Phase {
 
   checkState(): void {
     if (this.processor.state === State.TRIGGERED) {
-      this.processor.setPhase(new Attack(this.processor))
+      this.processor.setPhase(new Attack(this.processor, this.processor.from))
     }
     else if (this.elapsed >= this.duration) {
-      this.processor.setPhase(new NullPhase(this.processor));
+      this.processor.setPhase(new NullPhase(this.processor, this.processor.from));
     }
-  }
-
-  public get sustain(): number {
-    return this.processor.param('sustain') / 100;
   }
   
   public override compute(_index = 0): number {
-    return this.sustain * (1 - (this.elapsed / this.duration));
+    const progress = Math.min(this.elapsed / this.duration, 1);
+    return this.from * (1 - progress);
   }
-  
 }
