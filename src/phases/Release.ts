@@ -1,5 +1,4 @@
 import { frames } from "../utils/functions/framesComputations";
-import { State } from "../utils/frame";
 import { Attack } from "./Attack";
 import NullPhase from "./NullPhase";
 import { Phase } from "./Phase";
@@ -11,7 +10,7 @@ export default class Release extends Phase {
   }
 
   checkState(): void {
-    if (this.processor.state === State.TRIGGERED) {
+    if (this.processor.rising) {
       this.processor.setPhase(new Attack(this.processor, this.processor.from))
     }
     else if (this.elapsed >= this.duration) {

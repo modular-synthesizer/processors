@@ -1,4 +1,3 @@
-import { State } from "../utils/frame";
 import { frames } from "../utils/functions/framesComputations";
 import { Decay } from "./Decay";
 import { Phase } from "./Phase";
@@ -15,7 +14,7 @@ export class Attack extends Phase {
   }
 
   public checkState(): void {
-    if (this.processor.state === State.RELEASED) {
+    if (this.processor.falling) {
       this.processor.setPhase(new Release(this.processor, this.processor.from));
       return;
     }

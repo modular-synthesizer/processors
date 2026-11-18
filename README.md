@@ -47,4 +47,4 @@ There are four available parameters :
 * `release`the duration, in milliseconds, of the release phase
 * `sustain` the value, in percent, of the input signal (see the inputs below). Eg: if set to 50, and input signal is 2, the envelope will output 1 at sustain phase.
 
-There are one input (at index 0), representing the signal that will be output during the sustain phase ; and one output, representing the control signal output by the envelope. It is designed to be plugged on a VCA gain parameter, but can be used as any signal.
+There are one input (at index 0), representing the signal that will be output during the sustain phase (this signal is the gate too, triggered between 0.1 and 0.9) ; and one output, representing the control signal output by the envelope. It is designed to be plugged on a VCA gain parameter, but can be used as any signal.

@@ -18,10 +18,13 @@ export abstract class Phase {
 
   public step(index = 0): number {
     this.elapsed += 1;
-    const value: number = this.compute(index);
-    this.processor.setLastOutput(value)
-    this.checkState();
+    const value = this.compute(index);
+    this.processor.setLastOutput(value);
     return value;
+  }
+
+  protected sustainLevel(index = 0): number {
+    return this.processor.input * this.processor.param("sustain", index) / 100;
   }
 
   abstract checkState(): void;

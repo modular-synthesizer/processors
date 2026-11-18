@@ -1,5 +1,4 @@
 import { frames } from "../utils/functions/framesComputations";
-import { State } from "../utils/frame";
 import Sustain from "./Sustain";
 import { Phase } from "./Phase";
 import Release from "./Release";
@@ -9,19 +8,14 @@ export class Decay extends Phase {
     return frames(this.processor.param('decay'), this.sampleRate);
   }
 
-  public get sustain(): number {
-    return this.processor.param('sustain') / 100;
-  }
-
-  public override compute(_index = 0): number {
-    const delta: number = this.sustain;
-    const ratio = (1 - this.sustain) * ((this.duration - Math.min(this.elapsed, this.duration)) / this.duration);
-
-    return delta + ratio;
+  public override compute(index = 0): number {
+    const target = this.sustainLevel(index);
+    const progress = Math.min(this.elapsed / this.duration, 1);
+    return 1 + (target - 1) * progress;
   }
 
   public checkState(): void {
-    if (this.processor.state === State.RELEASED) {
+    if (this.processor.falling) {
       this.processor.setPhase(new Release(this.processor, this.processor.from));
       return;
     }
