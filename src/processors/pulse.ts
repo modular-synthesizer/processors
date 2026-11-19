@@ -4,20 +4,17 @@
  * The events of the processor are :
  * - [pulse] to trigger a pulse.
  */
-// @ts-ignore
 export class PulseProcessor extends AudioWorkletProcessor {
   nextValue = 0;
 
-  public readonly port: MessagePort;
-
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
     this.port.onmessage = ({ data }) => {
       if (data === "pulse") this.nextValue = 1;
     }
   }
 
-  process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {
+  process (_: Float32Array[][], outputs: Float32Array[][]) {
     for (let i = 0; i < outputs[0][0].length; ++i) {
       outputs[0][0][i] = this.nextValue;
       this.nextValue = 0;

@@ -1,8 +1,5 @@
-import type { AudioParamDescriptor } from "../utils/types/webaudioapi";
-
-// @ts-ignore
 export class BitcrusherProcessor extends AudioWorkletProcessor {
-  static get parameterDescriptors(): AudioParamDescriptor[] {
+  static get parameterDescriptors() {
     return [
       {
         name: 'reductionFactor',

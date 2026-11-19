@@ -1,5 +1,3 @@
-import type { AudioParamDescriptor } from "../utils/types/webaudioapi"
-
 enum SequencerMode {
   RANDOM = "Random",
   STANDARD = "Standard",
@@ -21,12 +19,9 @@ const modes = [
  * The parameters of the processor are :
  * - [steps] the number of steps before resetting the count.
  */
-// @ts-ignore
 export class SequencerProcessor extends AudioWorkletProcessor {
 
   private step = 0;
-
-  public readonly port: MessagePort;
 
   process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {
     for (let i = 0; i < 128; ++i) {
@@ -46,7 +41,7 @@ export class SequencerProcessor extends AudioWorkletProcessor {
     return true;
   }
 
-  computeNextStep(parameters: Record<string, Float32Array>) {
+  computeNextStep(parameters: Record<string, Float32Array>): number {
     const steps = parameters.steps[0] - 1;
     const mode = this.getMode(parameters.mode[0]);
     if (mode === SequencerMode.STANDARD) {
@@ -55,6 +50,7 @@ export class SequencerProcessor extends AudioWorkletProcessor {
     if (mode === SequencerMode.RANDOM) {
       return Math.floor(Math.random() * steps);
     }
+    return 0
   }
 
   getMode(mode: number) {
@@ -63,17 +59,17 @@ export class SequencerProcessor extends AudioWorkletProcessor {
     return modes[Math.round(mode)];
   }
 
-  parse(inputs, position, channel, index, defaultValue = 0) {
+  parse(inputs: Float32Array[][], position: number, channel: number, index: number, defaultValue = 0) {
     if (inputs.length <= position) return defaultValue;
     if (inputs[position].length <= channel) return defaultValue;
     return inputs[position][channel][index];
   }
 
-  triggered(inputs, position, channel, index, defaultValue = 0) {
+  triggered(inputs: Float32Array[][], position: number, channel: number, index: number, defaultValue = 0) {
     return this.parse(inputs, position, channel, index, defaultValue) === 1
   }
   
-  static get parameterDescriptors(): AudioParamDescriptor[] {
+  static get parameterDescriptors() {
     return [
       {
         name: "steps",

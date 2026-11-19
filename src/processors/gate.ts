@@ -1,9 +1,6 @@
-import type { AudioParamDescriptor } from "../utils/types/webaudioapi";
-
-// @ts-ignore
 export class GateProcessor extends AudioWorkletProcessor {
 
-  static get parameterDescriptors(): AudioParamDescriptor[] {
+  static get parameterDescriptors() {
     return [
       {
         name: "duration",
@@ -22,9 +19,8 @@ export class GateProcessor extends AudioWorkletProcessor {
 
   lastTrigger = 0;
 
-  process (inputs, outputs, parameters) {
-    // @ts-ignore
-    this.duration = sampleRate / 1000 * parameters.duration[0];
+  process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {
+    this.duration = sampleRate / 1000 * parameters['duration'][0];
 
     for (let i = 0; i < 128; ++i) {
 
@@ -46,7 +42,7 @@ export class GateProcessor extends AudioWorkletProcessor {
     return (this.lastTrigger + this.duration) > this.currentFrame;
   }
 
-  triggered(inputs, position, channel, index) {
+  triggered(inputs: Float32Array[][], position: number, channel: number, index: number) {
     if (inputs.length <= position) return false;
     if (inputs[position].length <= channel) return false;
     return inputs[position][channel][index] === 1;

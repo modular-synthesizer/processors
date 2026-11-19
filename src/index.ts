@@ -5,7 +5,7 @@ import { GateProcessor } from "./processors/gate";
 import { PulseProcessor } from "./processors/pulse";
 import { SequencerProcessor } from "./processors/sequencer";
 
-const processors = {
+const processors: Record<string, AudioWorkletProcessorConstructor> = {
   bitcrusher: BitcrusherProcessor,
   pulse: PulseProcessor,
   clock: ClockProcessor,
@@ -15,6 +15,5 @@ const processors = {
 }
 
 for(const k in processors) {
-  // @ts-ignore
   registerProcessor(k, processors[k]);
 }

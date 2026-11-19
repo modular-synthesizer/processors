@@ -2,12 +2,10 @@ import NullPhase from '../phases/NullPhase';
 import type { Phase } from '../phases/Phase';
 import { Frame, type Thresholds } from '../utils/frame';
 import type { ITriggerable } from '../utils/interfaces/ITriggerable';
-import type { AudioParamDescriptor } from '../utils/types/webaudioapi';
 
-// @ts-ignore
 export class EnvelopeProcessor extends AudioWorkletProcessor implements ITriggerable {
   
-  static get parameterDescriptors(): AudioParamDescriptor[] {
+  static get parameterDescriptors() {
     return [
       {
         name: "attack",
@@ -40,10 +38,9 @@ export class EnvelopeProcessor extends AudioWorkletProcessor implements ITrigger
     ]
   }
 
-  public constructor(...args) {
-    super(...args);
+  public constructor() {
+    super()
     this.phase = new NullPhase(this, 0);
-    // @ts-ignore
     this._sampleRate = sampleRate;
   }
 
@@ -55,7 +52,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor implements ITrigger
 
   private lastOutput: number = 0;
 
-  private parameters: Record<string, Float32Array>;
+  private parameters: Record<string, Float32Array> = {};
 
   private readonly _sampleRate: number;
 
@@ -94,7 +91,7 @@ export class EnvelopeProcessor extends AudioWorkletProcessor implements ITrigger
     return true;
   }
 
-  public setPhase(phase: Phase | null) {
+  public setPhase(phase: Phase) {
     this.phase = phase;
   }
 
