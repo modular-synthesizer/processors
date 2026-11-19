@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rm -rf dist/ && webpack",
     "watch": "rm -rf dist/ && webpack --watch",
-    "dev": "http-server --cors"
+    "dev": "http-server --cors",
+    "typecheck": "tsc --noEmit -p ."
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "http-server": "^14.1.1"
   },
   "devDependencies": {
+    "@types/audioworklet": "^0.0.102",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
     "webpack": "^5.91.0",

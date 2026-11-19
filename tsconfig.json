@@ -2,8 +2,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2019",
-    "lib": ["es5", "es6", "dom"],
+    "lib": [ "es2019" ],
+    "types": [ "audioworklet" ],
     "rootDir": "src",
+    "strict": true
   },
   "include": [
     "src/**/*.ts"

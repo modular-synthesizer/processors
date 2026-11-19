@@ -1,5 +1,3 @@
-import type { AudioParamDescriptor } from "../utils/types/webaudioapi"
-
 const DEFAULT_FREQUENCY = 2;
 
 /**
@@ -12,10 +10,9 @@ const DEFAULT_FREQUENCY = 2;
  * The parameters of the processor are :
  * - [frequency] the number of impulses the clock will have per seconds.
  */
-// @ts-ignore
 export class ClockProcessor extends AudioWorkletProcessor {
   
-  static get parameterDescriptors(): AudioParamDescriptor[] {
+  static get parameterDescriptors() {
     return [
       {
         name: "frequency",
@@ -32,8 +29,8 @@ export class ClockProcessor extends AudioWorkletProcessor {
   private frequency: number;
   private sampleRate: number;
 
-  constructor(...args) {
-    super(...args);
+  constructor() {
+    super();
     this.lastPulse = 0;
     this.currentFrame = 0;  
     this.frequency = DEFAULT_FREQUENCY;
@@ -41,7 +38,6 @@ export class ClockProcessor extends AudioWorkletProcessor {
   }
 
   process (inputs: Float32Array[][], outputs: Float32Array[][], parameters: Record<string, Float32Array>) {
-    // @ts-ignore
     this.sampleRate = sampleRate;
 
     for (let i = 0; i < outputs[0][0].length; ++i) {
@@ -58,7 +54,7 @@ export class ClockProcessor extends AudioWorkletProcessor {
     return true;
   }
 
-  triggered(inputs, position, channel, index) {
+  triggered(inputs: Float32Array[][], position: number, channel: number, index: number) {
     if (inputs.length <= position) return false;
     if (inputs[position].length <= channel) return false;
     return inputs[position][channel][index] === 1;
